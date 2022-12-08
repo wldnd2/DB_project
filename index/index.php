@@ -92,18 +92,19 @@
         // 진행
         $sql = "SELECT S_CourseCode, S_CourseName, S_CourseCredit FROM StudentInfo WHERE S_StudentID = '$sID';";
         $result = mysqli_query($link, $sql);
-        // if(mysqli_num_rows($result) > 0){
-        //     print "<table class='table table-striped' border='1'>";
-        //     print   "<tr>
-        //                 <th>Fname</th>
-        //                 <th>Ssn</th>
-        //             </tr>";
-        //     while ($row = mysqli_fetch_assoc($result)) {
-        //         print "<tr><td>" . $row['Fname'] . "</td><td>" . $row['Ssn'] . "</td></tr>";
-        //     }
-        //     print "</table>";
-        // }
-          
+        if(mysqli_num_rows($result) > 0){
+            $const_table = "<tr> <th>S_CourseCode</th> <th>S_CourseName</th> <th>S_CourseCredit</th> </tr>";
+            print "<table class='table table-striped' border='1'>";
+            print $const_table;
+            while ($row = mysqli_fetch_assoc($result)) {
+                print "<tr><td>" . $row['S_CourseCode'] . "</td><td>" . $row['S_CourseName'] . "</td><td>" . $row['S_CourseCredit'] . "</td></tr>";
+            }
+            print "</table>";
+        }
+        else {
+            $msg="Does not exist.";
+            echo $msg;
+        }
         // Close connection
         mysqli_close($link);
     ?>
