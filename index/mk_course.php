@@ -60,7 +60,13 @@
                     }
                     // 추가할 과목 사항 조회해서 들고오기
                     $sql = "SELECT CourseName, CourseType, Credit from CourseInfo WHERE CourseCode = '$cID'";
+                    // 없으면 그냥 종료 -> 1번 기능 구현
                     $result = mysqli_query($link, $sql);
+                    if (mysqli_num_rows($result) == 0){
+                        $msg="Does not exist.";
+                        echo $msg;
+                        exit;
+                    }
                     $row = mysqli_fetch_assoc($result);
                     print $row['CourseName'] . $row['CourseType'] . $row['Credit']. "<br>";
                     // student 테이블에 추가하기
