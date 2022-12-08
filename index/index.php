@@ -87,8 +87,6 @@
 			print "___";
 			exit;
 		}
-        // 입력 확인
-        echo "ID ". $sID;
         // 진행
         $sql = "SELECT S_CourseCode, S_CourseName, S_CourseCredit FROM StudentInfo WHERE S_StudentID = '$sID';";
         $result = mysqli_query($link, $sql);
@@ -104,6 +102,13 @@
         else {
             $msg="Does not exist.";
             echo $msg;
+        }
+        // select sum(S_CourseCredit) from studentinfo where S_StudentID = "1234567890";
+        $sql = "select sum(S_CourseCredit) from studentinfo where S_StudentID ='$sID';";
+        $result = mysqli_query($link, $sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_assoc($result);
+            print "<h3>". "Total Credit : " . $row['sum(S_CourseCredit)'] ."</h3>";
         }
         // Close connection
         mysqli_close($link);
