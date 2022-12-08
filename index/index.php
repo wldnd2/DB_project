@@ -54,20 +54,21 @@
     			  <h2>학번과 수강하고자 하는 교과목 코드를 입력하세요</h2>
     			</div>
                 
-                <form action="view_emp.php" method="post">
+                <!-- <form action="view_emp.php" method="post"> -->
+                <form method="post">
                   <div class="form-group">
-                    <label for="e_fname">학번</label>
-                    <input class="form-control" name="e_fname" placeholder="학번을 입력하세요. (e.g. 1234567890)">
+                    <label for="studentID">학번</label>
+                    <input class="form-control" name="studentID" placeholder="학번을 입력하세요. (e.g. 1234567890)">
                   </div>
 
                   <div class="form-group">
-                    <label for="e_ssn">교과목 코드</label>
-                    <input class="form-control" name="e_ssn" placeholder="교과목 코드를 입력하세요. (e.g. COMP0322-000)">
+                    <label for="courseID">교과목 코드</label>
+                    <input class="form-control" name="courseID" placeholder="교과목 코드를 입력하세요. (e.g. COMP0322-000)">
                   </div>
 
                   <button type="submit" class="btn btn-default" formaction="mk_course.php">수강꾸러미에 담기</button>
                   <button type="submit" class="btn btn-default" formaction="rm_course.php">수강꾸러미에서 제거</button>
-                  <button type="submit" class="btn btn-default" formaction="view_emp.php">조회</button>
+                  <button type="submit" class="btn btn-default" formaction="index.php">조회</button>
                 </form>
                 
                 <hr>
@@ -77,26 +78,36 @@
     <!-- /.container -->
 
     <!-- view student table -->
-    <!-- <div class="container">
+    <div class="container">
     <?php
-        /* $sql = "SELECT Fname, Ssn FROM EMPLOYEE;";
+        // notice 및 에러 처리 출력 없이 진행한다. 
+        ini_set('display_errors','0');
+        $sID = mysqli_real_escape_string($link, $_REQUEST['studentID']);
+        if (empty($sID)) {
+			print "___";
+			exit;
+		}
+        // 입력 확인
+        echo "ID ". $sID;
+        // 진행
+        $sql = "SELECT S_CourseCode, S_CourseName, S_CourseCredit FROM StudentInfo WHERE S_StudentID = '$sID';";
         $result = mysqli_query($link, $sql);
-        if(mysqli_num_rows($result) > 0){
-            print "<table class='table table-striped' border='1'>";
-            print   "<tr>
-                        <th>Fname</th>
-                        <th>Ssn</th>
-                    </tr>";
-            while ($row = mysqli_fetch_assoc($result)) {
-                print "<tr><td>" . $row['Fname'] . "</td><td>" . $row['Ssn'] . "</td></tr>";
-            }
-            print "</table>";
-        }
+        // if(mysqli_num_rows($result) > 0){
+        //     print "<table class='table table-striped' border='1'>";
+        //     print   "<tr>
+        //                 <th>Fname</th>
+        //                 <th>Ssn</th>
+        //             </tr>";
+        //     while ($row = mysqli_fetch_assoc($result)) {
+        //         print "<tr><td>" . $row['Fname'] . "</td><td>" . $row['Ssn'] . "</td></tr>";
+        //     }
+        //     print "</table>";
+        // }
           
         // Close connection
-        mysqli_close($link); */
+        mysqli_close($link);
     ?>
-    </div> -->
+    </div>
 
 </body>
 
