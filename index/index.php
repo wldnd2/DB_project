@@ -65,8 +65,8 @@
                     <input class="form-control" name="e_ssn" placeholder="교과목 코드를 입력하세요. (e.g. COMP0322-000)">
                   </div>
 
-                  <button type="submit" class="btn btn-default" formaction="add_emp.php">수강꾸러미에 담기</button>
-                  <button type="submit" class="btn btn-default" formaction="add_emp.php">수강꾸러미에서 제거</button>
+                  <button type="submit" class="btn btn-default" formaction="mk_course.php">수강꾸러미에 담기</button>
+                  <button type="submit" class="btn btn-default" formaction="rm_course.php">수강꾸러미에서 제거</button>
                   <button type="submit" class="btn btn-default" formaction="view_emp.php">조회</button>
                 </form>
                 
@@ -76,10 +76,10 @@
     </div>
     <!-- /.container -->
 
-    <!-- view employee table -->
-    <div class="container">
+    <!-- view student table -->
+    <!-- <div class="container">
     <?php
-        $sql = "SELECT Fname, Ssn FROM EMPLOYEE;";
+        /* $sql = "SELECT Fname, Ssn FROM EMPLOYEE;";
         $result = mysqli_query($link, $sql);
         if(mysqli_num_rows($result) > 0){
             print "<table class='table table-striped' border='1'>";
@@ -94,9 +94,9 @@
         }
           
         // Close connection
-        mysqli_close($link);
+        mysqli_close($link); */
     ?>
-    </div>
+    </div> -->
 
 </body>
 
