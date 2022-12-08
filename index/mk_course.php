@@ -67,20 +67,23 @@
                         echo $msg;
                         exit;
                     }
-                    $row = mysqli_fetch_assoc($result);
-                    print $row['CourseName'] . $row['CourseType'] . $row['Credit']. "<br>";
-                    // student 테이블에 추가하기
-                    $cName = $row['CourseName'];
-                    $cType = $row['CourseType'];
-                    $cCredit = $row['Credit'];
-                    $sql = "INSERT INTO StudentInfo VALUES ('$sID', '$cID', '$cName', '$cType', $cCredit)";
-                    print $sql;
-                    $result = mysqli_query($link, $sql);
-                    if(mysqli_errno($link) == 1062){
-                        echo 'Already in table!';
-                    }
                     else{
-                        print 'Student ID ($sID)'."updated in Database<br><hr>";
+                        // 있으면 추가하기
+                        $row = mysqli_fetch_assoc($result);
+                        print $row['CourseName'] . $row['CourseType'] . $row['Credit']. "<br>";
+                        // student 테이블에 추가하기
+                        $cName = $row['CourseName'];
+                        $cType = $row['CourseType'];
+                        $cCredit = $row['Credit'];
+                        $sql = "INSERT INTO StudentInfo VALUES ('$sID', '$cID', '$cName', '$cType', $cCredit)";
+                        print $sql;
+                        $result = mysqli_query($link, $sql);
+                        if(mysqli_errno($link) == 1062){
+                            echo '<h3>Already in table!</h3><br><hr>';
+                        }
+                        else{
+                            print 'Student ID ($sID)'."updated in Database<br><hr>";
+                        }
                     }
                     // 위에서 없데이트가 된것을 반영하여 fname으로 해당 데이터를 찾아서 출력합니다.
                     $sql = "SELECT * FROM StudentInfo";
