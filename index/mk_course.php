@@ -63,7 +63,35 @@
                     $result = mysqli_query($link, $sql);
                     $row = mysqli_fetch_assoc($result);
                     print $row['CourseName'] . $row['CourseType'] . $row['Credit']. "<br>";
-                    
+                    // student 테이블에 추가하기
+                    $cName = $row['CourseName'];
+                    $cType = $row['CourseType'];
+                    $cCredit = $row['Credit'];
+                    $sql = "INSERT INTO StudentInfo VALUES ('$sID', '$cID', '$cName', '$cType', $cCredit)";
+                    print $sql;
+                    $result = mysqli_query($link, $sql);
+                    if(mysqli_errno($link) == 1062){
+                        echo 'Already in table!';
+                    }
+                    else{
+                        print 'Student ID ($sID)'."updated in Database<br><hr>";
+                    }
+                    // 위에서 없데이트가 된것을 반영하여 fname으로 해당 데이터를 찾아서 출력합니다.
+                    $sql = "SELECT * FROM StudentInfo";
+                    $result = mysqli_query($link, $sql);
+                    if(mysqli_num_rows($result) > 0){
+                        $const_table = "<tr> <th>S_StudentID</th> <th>S_CourseCode</th> <th>S_CourseName</th> <th>S_CourseType</th> <th>S_CourseCredit</th> </tr>";
+                        print "<table class='table table-striped' border='1'>";
+                        print $const_table;
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            print "<tr><td>" . $row['S_StudentID'] . "</td><td>" . $row['S_CourseCode'] . "</td><td>" . $row['S_CourseName'] . "</td><td>" . $row['S_CourseType'] . "</td><td>" . $row['S_CourseCredit'] . "</td></tr>";
+                        }
+                        print "</table>";
+                    }
+                    else {
+                        $msg="Does not exist.";
+                        echo $msg;
+                    }
                     // Close connection
                     mysqli_close($link);
                 ?>
