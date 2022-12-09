@@ -63,7 +63,7 @@
                     // 없으면 그냥 종료 -> 1번 기능 구현
                     $result = mysqli_query($link, $sql);
                     if (mysqli_num_rows($result) == 0){
-                        $msg="Does not exist.";
+                        $msg="<h3>Course Name & Course Code does not exist.</h3>";
                         echo $msg;
                         exit;
                     }
@@ -77,7 +77,22 @@
                         $cCredit = $row['Credit'];
                         /* ------------------------------------------------------------------------------------------- */
                         // (select count(S_CourseType) from studentinfo where S_CourseType = "교양";) <= 3 아래코드 진행되게 하기;
+                        $count_check = "select count(S_CourseType) from studentinfo where S_CourseType = '교양'";
+                        $count_result = mysqli_query($link, $count_check);
+                        $cout_row = mysqli_fetch_assoc($count_result);
+                        if($cout_row['count(S_CourseType)'] > 3){
+                            echo '<h3>교양 과목이 3개를 넘겼습니다!</h3><br><hr>';
+                            exit;
+                        }
                         // (select sum(S_CourseCredit) from studentinfo where S_StudentID = "1234567890";) <= 24 아래코드 진행되게 하기;
+                        $credit_check = "select sum(S_CourseCredit) from studentinfo where S_StudentID = '$sID'";
+                        $credit_result = mysqli_query($link, $credit_check);
+                        $credit_row = mysqli_fetch_assoc($credit_result);
+                        print $credit_row['sum(S_CourseCredit)'];
+                        if($credit_row['sum(S_CourseCredit)'] + $cCredit > 24){
+                            echo '<h3>총 과목 학점이 24학점을 넘겼습니다!</h3><br><hr>';
+                            exit;
+                        }
                         /* ------------------------------------------------------------------------------------------- */
                         // student 테이블에 같은 이름이 있으면 바로 exit
                         // select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = "ITEC0424-001");
@@ -96,6 +111,7 @@
                             else{
                                 print 'Student ID ('.  $sID .')'. "updated in Database<br><hr>";
                             }
+                            // courseinfo에도 업데이트하기
                         }
                     }
                     // 위에서 없데이트가 된것을 반영하여 fname으로 해당 데이터를 찾아서 출력합니다.
