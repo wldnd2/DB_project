@@ -58,11 +58,13 @@
                         print "Empty input not allowed.";
                         exit;
                     }
-                    // 추가할 과목 사항 조회해서 들고오기
-                    $sql = "SELECT CourseName, CourseType, Credit from CourseInfo WHERE CourseCode = '$cID'";
+                    // 제거하기
+                    $sql = "delete from studentinfo WHERE S_StudentID = '$sID' and S_CourseCode = '$cID'";
                     $result = mysqli_query($link, $sql);
-                    $row = mysqli_fetch_assoc($result);
-                    print $row['CourseName'] . $row['CourseType'] . $row['Credit']. "<br>";
+
+                    // update courseinfo set StudQuota = StudQuota + 1 where courseCode = "CLTR0003-005";
+                    $increase_sql = "update courseinfo set StudQuota = StudQuota - 1 where courseCode = '$cID';";
+                    $increase_result = mysqli_query($link, $increase_sql);
                     
                     // Close connection
                     mysqli_close($link);
