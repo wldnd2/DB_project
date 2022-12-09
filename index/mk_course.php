@@ -77,7 +77,7 @@
                         $cCredit = $row['Credit'];
                         /* ------------------------------------------------------------------------------------------- */
                         // (select count(S_CourseType) from studentinfo where S_CourseType = "교양";) <= 3 아래코드 진행되게 하기;
-                        $count_check = "select count(S_CourseType) from studentinfo where S_CourseType = '교양'";
+                        $count_check = "select count(S_CourseType) from studentinfo where S_CourseType = '교양' and S_StudentID = '$sID';";
                         $count_result = mysqli_query($link, $count_check);
                         $cout_row = mysqli_fetch_assoc($count_result);
                         if($cout_row['count(S_CourseType)'] > 3){
@@ -94,9 +94,17 @@
                             exit;
                         }
                         /* ------------------------------------------------------------------------------------------- */
+                        // select StudQuota from courseinfo where coursecode = "CLTR0003-005";
+                        $find_sql = "select StudQuota from courseinfo where coursecode = '$cID';";
+                        $find_result = mysqli_query($link, $find_sql);
+                        $find_row = mysqli_fetch_assoc($find_result);
+                        if($find_row['StudQuota'] == 2){
+                            echo '<h3>수강인원이 다 찼습니다!</h3><br><hr>';
+                            exit;
+                        }
                         // student 테이블에 같은 이름이 있으면 바로 exit
                         // select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = "ITEC0424-001");
-                        $check_sql = "select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = '$cID')";
+                        $check_sql = "select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = '$cID')  and S_StudentID = '$sID';";
                         $check_result = mysqli_query($link, $check_sql);
                         if (mysqli_num_rows($check_result) > 0){
                             echo '<h3>Same courseName in table!</h3><br><hr>';
@@ -111,10 +119,12 @@
                             else{
                                 print 'Student ID ('.  $sID .')'. "updated in Database<br><hr>";
                             }
-                            // courseinfo에도 업데이트하기
                         }
+                        // update courseinfo set StudQuota = StudQuota + 1 where courseCode = "CLTR0003-005";
+                        $increase_sql = "update courseinfo set StudQuota = StudQuota + 1 where courseCode = '$cID';";
+                        $increase_result = mysqli_query($link, $increase_sql);
+                        // $find_row = mysqli_fetch_assoc($increase_result);   
                     }
-                    // 위에서 없데이트가 된것을 반영하여 fname으로 해당 데이터를 찾아서 출력합니다.
                     $sql = "SELECT * FROM StudentInfo";
                     $result = mysqli_query($link, $sql);
                     if(mysqli_num_rows($result) > 0){
