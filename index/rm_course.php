@@ -63,8 +63,8 @@
                     $result = mysqli_query($link, $sql);
 
                     // update courseinfo set StudQuota = StudQuota + 1 where courseCode = "CLTR0003-005";
-                    $increase_sql = "update courseinfo set StudQuota = StudQuota - 1 where courseCode = '$cID';";
-                    $increase_result = mysqli_query($link, $increase_sql);
+                    $decrease_sql = "update courseinfo set StudQuota = StudQuota - 1 where courseCode = '$cID';";
+                    $decrease_result = mysqli_query($link, $decrease_sql);
                     
                     // Close connection
                     mysqli_close($link);
