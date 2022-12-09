@@ -76,13 +76,15 @@
                         $cType = $row['CourseType'];
                         $cCredit = $row['Credit'];
                         /* ------------------------------------------------------------------------------------------- */
-                        // (select count(S_CourseType) from studentinfo where S_CourseType = "교양";) <= 3 아래코드 진행되게 하기;
-                        $count_check = "select count(S_CourseType) from studentinfo where S_CourseType = '교양' and S_StudentID = '$sID';";
-                        $count_result = mysqli_query($link, $count_check);
-                        $cout_row = mysqli_fetch_assoc($count_result);
-                        if($cout_row['count(S_CourseType)'] > 3){
-                            echo '<h3>교양 과목이 3개를 넘겼습니다!</h3><br><hr>';
-                            exit;
+                        if($cType == "교양"){
+                            // (select count(S_CourseType) from studentinfo where S_CourseType = "교양";) <= 3 아래코드 진행되게 하기;
+                            $count_check = "select count(S_CourseType) from studentinfo where S_CourseType = '교양' and S_StudentID = '$sID';";
+                            $count_result = mysqli_query($link, $count_check);
+                            $cout_row = mysqli_fetch_assoc($count_result);
+                            if($cout_row['count(S_CourseType)'] > 2){
+                                echo '<h3>교양 과목이 3개를 넘겼습니다!</h3><br><hr>';
+                                exit;
+                            }
                         }
                         // (select sum(S_CourseCredit) from studentinfo where S_StudentID = "1234567890";) <= 24 아래코드 진행되게 하기;
                         $credit_check = "select sum(S_CourseCredit) from studentinfo where S_StudentID = '$sID'";
@@ -119,11 +121,11 @@
                             else{
                                 print 'Student ID ('.  $sID .')'. "updated in Database<br><hr>";
                             }
+                            // update courseinfo set StudQuota = StudQuota + 1 where courseCode = "CLTR0003-005";
+                            $increase_sql = "update courseinfo set StudQuota = StudQuota + 1 where courseCode = '$cID';";
+                            $increase_result = mysqli_query($link, $increase_sql);
+                            // $find_row = mysqli_fetch_assoc($increase_result);   
                         }
-                        // update courseinfo set StudQuota = StudQuota + 1 where courseCode = "CLTR0003-005";
-                        $increase_sql = "update courseinfo set StudQuota = StudQuota + 1 where courseCode = '$cID';";
-                        $increase_result = mysqli_query($link, $increase_sql);
-                        // $find_row = mysqli_fetch_assoc($increase_result);   
                     }
                     $sql = "SELECT * FROM StudentInfo";
                     $result = mysqli_query($link, $sql);
