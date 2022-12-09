@@ -9,10 +9,11 @@ S_CourseName VARCHAR(100),
 S_CourseType VARCHAR(100),
 S_CourseCredit int,
 PRIMARY KEY (S_StudentID, S_CourseCode),
--- StudentID, CourseCode를 중복 키로 설정
 );
 
 CREATE TABLE CourseInfo ( 
+College	VARCHAR(255),
+Department VARCHAR(255),
 CourseCode VARCHAR(20) not null,
 CourseName VARCHAR(100),
 OpenYear VARCHAR(4),
