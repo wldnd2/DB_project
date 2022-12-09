@@ -75,14 +75,27 @@
                         $cName = $row['CourseName'];
                         $cType = $row['CourseType'];
                         $cCredit = $row['Credit'];
-                        $sql = "INSERT INTO StudentInfo VALUES ('$sID', '$cID', '$cName', '$cType', $cCredit)";
-                        print $sql;
-                        $result = mysqli_query($link, $sql);
-                        if(mysqli_errno($link) == 1062){
-                            echo '<h3>Already in table!</h3><br><hr>';
+                        /* ------------------------------------------------------------------------------------------- */
+                        // (select count(S_CourseType) from studentinfo where S_CourseType = "교양";) <= 3 아래코드 진행되게 하기;
+                        // (select sum(S_CourseCredit) from studentinfo where S_StudentID = "1234567890";) <= 24 아래코드 진행되게 하기;
+                        /* ------------------------------------------------------------------------------------------- */
+                        // student 테이블에 같은 이름이 있으면 바로 exit
+                        // select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = "ITEC0424-001");
+                        $check_sql = "select S_CourseCode, S_CourseName from studentinfo where S_CourseName in (select coursename from courseinfo where coursecode = '$cID')";
+                        $check_result = mysqli_query($link, $check_sql);
+                        if (mysqli_num_rows($check_result) > 0){
+                            echo '<h3>Same courseName in table!</h3><br><hr>';
+                            exit;
                         }
                         else{
-                            print 'Student ID ($sID)'."updated in Database<br><hr>";
+                            $sql = "INSERT INTO StudentInfo VALUES ('$sID', '$cID', '$cName', '$cType', $cCredit)";
+                            $result = mysqli_query($link, $sql);
+                            if(mysqli_errno($link) == 1062){
+                                echo '<h3>Already in table!</h3><br><hr>';
+                            }
+                            else{
+                                print 'Student ID ('.  $sID .')'. "updated in Database<br><hr>";
+                            }
                         }
                     }
                     // 위에서 없데이트가 된것을 반영하여 fname으로 해당 데이터를 찾아서 출력합니다.
